@@ -1,0 +1,47 @@
+name: Post news to Telegram
+
+on:
+  schedule:
+    # Публікації о 08:00, 12:00, 16:00 та 19:00 за Києвом (UTC+3 влітку / +2 взимку)
+    # Час вказано в UTC, тому враховуйте зсув. Нижче приклад для літнього часу (Kyiv = UTC+3).
+    - cron: "0 5 * * *"   # 08:00 Київ
+    - cron: "0 9 * * *"   # 12:00 Київ
+    - cron: "0 13 * * *"  # 16:00 Київ
+    - cron: "0 16 * * *"  # 19:00 Київ
+  workflow_dispatch: {}   # дозволяє запускати вручну кнопкою "Run workflow"
+
+permissions:
+  contents: write
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: claude-sonnet-5
+          IMAGE_PROVIDER: pollinations
+          POSTS_PER_RUN: 1
+        run: python main.py
+
+      - name: Save posted-news history back to repo
+        run: |
+          git config user.name "news-bot"
+          git config user.email "news-bot@users.noreply.github.com"
+          git add posted_news.json
+          git diff --cached --quiet || git commit -m "chore: update posted news history [skip ci]"
+          git push
