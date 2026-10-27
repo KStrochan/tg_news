@@ -1,5 +1,6 @@
 """Генерація заголовка, опису для Telegram-посту та промпту для картинки через Claude API."""
 import json
+import re
 
 import anthropic
 
@@ -48,36 +49,48 @@ def generate_post_content(title: str, summary: str, source: str) -> dict:
         "Підготуй пост за інструкцією."
     )
 
-    response = client.messages.create(
-        model=config.anthropic_model,
-        max_tokens=800,
-        system=SYSTEM_PROMPT,
-        messages=[{"role": "user", "content": user_prompt}],
-    )
+    data = None
+    for _attempt in range(2):
+        response = client.messages.create(
+            model=config.anthropic_model,
+            max_tokens=800,
+            system=SYSTEM_PROMPT,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        raw_text = "".join(block.text for block in response.content if block.type == "text")
+        data = _parse_json(raw_text)
+        if data and data.get("title") and data.get("post_text"):
+            break
+        print(f"   [claude] Не вдалося розібрати відповідь (спроба {_attempt + 1}): {raw_text[:200]!r}")
+        data = None
 
-    raw_text = "".join(block.text for block in response.content if block.type == "text").strip()
-
-    # На випадок, якщо модель обгорне JSON в markdown-код
-    raw_text = raw_text.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
-
-    try:
-        data = json.loads(raw_text)
-    except json.JSONDecodeError:
-        # Фолбек, якщо парсинг не вдався - публікуємо без AI-опрацювання
+    if data is None:
+        if not summary:
+            # Без AI-тексту і без опису публікувати нічого — пропускаємо новину
+            raise RuntimeError("Claude не повернув коректний JSON, а в новини немає опису")
         data = {
             "title": "📰 " + title[:88],
-            "post_text": "📌 " + (summary[:400] or title),
-            "image_prompt": (
-                f"Symbolic editorial illustration about: {title}, no graphic violence, "
-                "no blood, no corpses, no injured people, no real identifiable faces, "
-                "no text or logos, calm editorial illustration style"
-            ),
+            "post_text": "📌 " + summary[:400],
         }
 
-    data.setdefault("title", title[:90])
-    data.setdefault("post_text", summary[:400] or title)
     data.setdefault(
         "image_prompt",
-        f"Symbolic editorial illustration about: {title}, no graphic violence, no real faces, no text",
+        f"Symbolic editorial illustration about: {title}, no graphic violence, no blood, "
+        "no injured people, no real identifiable faces, no text or logos, calm editorial illustration style",
     )
     return data
+
+
+def _parse_json(raw_text: str) -> dict | None:
+    """Дістає JSON з відповіді моделі, навіть якщо він обгорнутий у ```json або має переноси рядків у рядках."""
+    text = raw_text.strip()
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+    if not match:
+        return None
+    try:
+        data = json.loads(match.group(0), strict=False)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(data, dict):
+        return None
+    return {k: v.strip() if isinstance(v, str) else v for k, v in data.items()}

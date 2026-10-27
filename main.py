@@ -28,7 +28,8 @@ def run() -> int:
         return 1
 
     posted = load_posted()
-    news_items = get_unpublished_news(set(posted), limit=config.posts_per_run)
+    # беремо кандидатів із запасом: якщо одна новина не вдалась, публікуємо наступну
+    news_items = get_unpublished_news(set(posted), limit=config.posts_per_run * 3)
 
     if not news_items:
         print("Нових новин не знайдено (можливо, все вже опубліковано або джерела недоступні).")
@@ -38,6 +39,8 @@ def run() -> int:
     published_count = 0
     errors = []
     for item in news_items:
+        if published_count >= config.posts_per_run:
+            break
         try:
             print(f"-> Обробляю: {item.title} ({item.source})")
             content = generate_post_content(item.title, item.summary, item.source)
@@ -60,7 +63,7 @@ def run() -> int:
         time.sleep(config.delay_between_posts)
 
     save_posted(posted)
-    print(f"Готово. Опубліковано новин: {published_count}/{len(news_items)}")
+    print(f"Готово. Опубліковано новин: {published_count}/{config.posts_per_run}")
 
     if published_count == 0:
         gh_error("Жодну новину не опубліковано. " + " | ".join(errors)[:900])
