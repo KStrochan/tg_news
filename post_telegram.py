@@ -15,8 +15,9 @@ def _build_text(title: str, post_text: str, source: str, link: str, limit: int) 
     # Екрануємо текст, інакше символи < > & ламають parse_mode=HTML
     title_h = html.escape(title or "")
     source_h = html.escape(source or "")
-    footer = f'\n\n🔗 <a href="{html.escape(link, quote=True)}">{source_h}</a>' if link else f"\n\n🔗 {source_h}"
-    footer += _subscribe_line()
+    # Один охайний рядок підпису, як у топових каналах: джерело · канал | Підписатися
+    src = f'<a href="{html.escape(link, quote=True)}">{source_h}</a>' if link else source_h
+    footer = f"\n\nДжерело: {src}" + _subscribe_line()
 
     body = html.escape(post_text or "")
     head = f"<b>{title_h}</b>\n\n"
@@ -31,8 +32,7 @@ def _subscribe_line() -> str:
     channel = config.telegram_channel_id
     if not channel.startswith("@"):
         return ""
-    title = html.escape(config.channel_title or "наш канал")
-    return f'\n👉 <a href="https://t.me/{channel[1:]}">Підписатись на {title}</a>'
+    return f'\n\n<a href="https://t.me/{channel[1:]}"><b>Новини Стрийщини | Підписатися</b></a>'
 
 
 def _call(method: str, data: dict, files: dict | None = None) -> dict:
