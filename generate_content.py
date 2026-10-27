@@ -48,12 +48,14 @@ SYSTEM_PROMPT = """Ти — редактор місцевого Telegram-кан�
 """
 
 
-def generate_post_content(title: str, summary: str, source: str) -> dict:
+def generate_post_content(title: str, summary: str, source: str, full_text: str = "") -> dict:
     user_prompt = (
         f"Джерело: {source}\n"
         f"Оригінальний заголовок: {title}\n"
-        f"Короткий зміст: {summary}\n\n"
-        "Підготуй пост за інструкцією."
+        f"Короткий зміст: {summary}\n"
+        + (f"\nПовний текст статті:\n{full_text}\n" if full_text else "")
+        + "\nПідготуй пост за інструкцією. Почни з найважливішого для мешканців: що змінюється для них,"
+        " де, коли, скільки. Вибери з тексту 1-2 найцікавіші конкретні деталі (цифри, адреси, імена, дати)."
     )
 
     data = None

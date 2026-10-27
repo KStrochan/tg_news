@@ -5,13 +5,18 @@ import time
 
 from config import config
 from fetch_news import get_unpublished_news
+from article_text import get_article_text
 from generate_content import generate_post_content
+from news_ranker import rank_news
 from generate_image import generate_image
 from source_image import get_source_image
 from post_telegram import post_to_channel
 from storage import load_posted, save_posted
 
 IN_GITHUB = os.getenv("GITHUB_ACTIONS") == "true"
+
+MIN_SCORE = int(os.getenv("MIN_SCORE", "5"))   # нижче — не публікуємо
+SKIP_SCORE = 3                                  # таке більше не розглядаємо
 
 
 def gh_error(message: str):
@@ -29,11 +34,20 @@ def run() -> int:
         return 1
 
     posted = load_posted()
-    # беремо кандидатів із запасом: якщо одна новина не вдалась, публікуємо наступну
-    news_items = get_unpublished_news(set(posted), limit=config.posts_per_run * 3)
-
-    if not news_items:
+    candidates = get_unpublished_news(set(posted), limit=25)
+    if not candidates:
         print("Нових новин не знайдено (можливо, все вже опубліковано або джерела недоступні).")
+        save_posted(posted)
+        return 0
+
+    # Claude оцінює цікавість; нудне (≤ SKIP_SCORE) запам'ятовуємо, щоб не оцінювати повторно
+    ranked = rank_news(candidates)
+    for it, score in ranked:
+        if score <= SKIP_SCORE:
+            posted.append(it.link)
+    news_items = [it for it, score in ranked if score >= MIN_SCORE]
+    if not news_items:
+        print(f"Цікавих новин (оцінка ≥ {MIN_SCORE}) зараз немає — пропускаю публікацію.")
         save_posted(posted)
         return 0
 
@@ -44,7 +58,8 @@ def run() -> int:
             break
         try:
             print(f"-> Обробляю: {item.title} ({item.source})")
-            content = generate_post_content(item.title, item.summary, item.source)
+            full_text = get_article_text(item.link)
+            content = generate_post_content(item.title, item.summary, item.source, full_text)
             image_bytes = None
             if item.source_images:
                 image_bytes = get_source_image(item.entry, item.link)
