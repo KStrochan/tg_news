@@ -27,6 +27,7 @@ class NewsItem:
     published: datetime
     entry: object = field(default=None, repr=False)  # сирий RSS-запис (для пошуку фото)
     source_images: bool = True                        # чи можна брати фото з цього джерела
+    local: bool = True                                # про Стрийщину (True) чи загальна новина (False)
 
 
 def _clean_html(raw: str) -> str:
@@ -72,10 +73,19 @@ def _download(url: str):
     return feedparser.parse(resp.content)
 
 
+GENERAL_MAX_AGE_HOURS = 12  # загальні новини швидко старіють
+
+
 def fetch_all_news(max_per_feed: int = 30) -> list[NewsItem]:
-    """Повертає місцеві новини з усіх увімкнених джерел, нові першими."""
+    """Новини з усіх джерел, нові першими.
+
+    Місцеві: з джерел без фільтра або ті, де згадано Стрийщину.
+    Загальні (local=False): з джерел з "general": true — решта їхніх новин, лише свіжі (12 год).
+    """
     patterns, max_age_hours = _load_settings()
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=max_age_hours)
+    now = datetime.now(timezone.utc)
+    cutoff_local = now - timedelta(hours=max_age_hours)
+    cutoff_general = now - timedelta(hours=GENERAL_MAX_AGE_HOURS)
 
     items: list[NewsItem] = []
     for feed_cfg in load_feeds():
@@ -89,7 +99,7 @@ def fetch_all_news(max_per_feed: int = 30) -> list[NewsItem]:
             print(f"[fetch_news] Джерело {feed_cfg['name']} не віддало новин")
             continue
 
-        taken = 0
+        n_local = n_general = 0
         for entry in parsed.entries[:max_per_feed]:
             title = _clean_html(getattr(entry, "title", ""))
             link = getattr(entry, "link", "")
@@ -105,13 +115,17 @@ def fetch_all_news(max_per_feed: int = 30) -> list[NewsItem]:
                 entry=entry,
                 source_images=feed_cfg.get("source_images", True),
             )
-            if item.published < cutoff:
-                continue
-            if feed_cfg.get("filter", True) and not is_local(item, patterns):
-                continue
+            item.local = (not feed_cfg.get("filter", True)) or is_local(item, patterns)
+            if item.local:
+                if item.published < cutoff_local:
+                    continue
+                n_local += 1
+            else:
+                if not feed_cfg.get("general", False) or item.published < cutoff_general:
+                    continue
+                n_general += 1
             items.append(item)
-            taken += 1
-        print(f"[fetch_news] {feed_cfg['name']}: свіжих місцевих новин {taken}")
+        print(f"[fetch_news] {feed_cfg['name']}: місцевих {n_local}, загальних {n_general}")
 
     items.sort(key=lambda x: x.published, reverse=True)
     return items
@@ -121,12 +135,13 @@ def _norm_title(title: str) -> str:
     return re.sub(r"[^\w]+", " ", title.lower()).strip()
 
 
-def get_unpublished_news(posted_links: set, limit: int) -> list[NewsItem]:
-    fresh, seen_titles = [], set()
+def get_unpublished_news(posted_links: set, limit: int = 20, general_limit: int = 15) -> list[NewsItem]:
+    """Неопубліковані кандидати: до `limit` місцевих і до `general_limit` загальних (найсвіжіших)."""
+    local, general, seen_titles = [], [], set()
     for item in fetch_all_news():
         key = _norm_title(item.title)[:60]
         if item.link in posted_links or key in seen_titles:
             continue
         seen_titles.add(key)
-        fresh.append(item)
-    return fresh[:limit]
+        (local if item.local else general).append(item)
+    return local[:limit] + general[:general_limit]

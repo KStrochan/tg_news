@@ -1,5 +1,5 @@
 {
-  "_comment": "Джерела новин для каналу «Стрий | Новини Стрийщини». filter=false — беремо все (сайт міськради); filter=true — беремо тільки новини, де згадано Стрий або громади Стрийського району (див. local_keywords). source_images=false — не брати фото з цього джерела (тоді бот генерує ілюстрацію).",
+  "_comment": "Джерела для каналу «Стрий | Новини Стрийщини». filter=false — усе з джерела вважається місцевим (сайт міськради). filter=true — місцевими вважаються лише новини зі згадкою Стрийщини (local_keywords). general=true — решту новин джерела бот теж розглядає як загальні (ціни, виплати, тарифи тощо), Claude публікує їх лише якщо вони важливі для всіх. source_images=false — не брати фото з джерела.",
   "max_age_hours": 48,
   "feeds": [
     {
@@ -21,19 +21,38 @@
       "url": "https://tvoemisto.tv/rss.xml",
       "filter": true,
       "enabled": true,
-      "source_images": true
+      "source_images": true,
+      "general": true
     },
     {
       "name": "ZAXID.NET",
       "url": "https://zaxid.net/rss/all.xml",
       "filter": true,
       "enabled": true,
-      "source_images": true
+      "source_images": true,
+      "general": true
     },
     {
       "name": "Еспресо.Захід",
       "url": "https://zahid.espreso.tv/rss",
       "filter": true,
+      "enabled": true,
+      "source_images": true,
+      "general": true
+    },
+    {
+      "name": "Українська правда",
+      "url": "https://www.pravda.com.ua/rss/view_news/",
+      "filter": true,
+      "general": true,
+      "enabled": true,
+      "source_images": true
+    },
+    {
+      "name": "Економічна правда",
+      "url": "https://www.epravda.com.ua/rss/",
+      "filter": true,
+      "general": true,
       "enabled": true,
       "source_images": true
     }
