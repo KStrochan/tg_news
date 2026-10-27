@@ -11,7 +11,7 @@ from news_ranker import rank_news
 from generate_image import generate_image
 from source_image import get_source_image
 from post_telegram import post_to_channel
-from storage import load_posted, save_posted
+from storage import load_posted, load_recent_titles, save_posted, save_recent_titles
 
 IN_GITHUB = os.getenv("GITHUB_ACTIONS") == "true"
 
@@ -41,7 +41,8 @@ def run() -> int:
         return 0
 
     # Claude оцінює цікавість; нудне (≤ SKIP_SCORE) запам'ятовуємо, щоб не оцінювати повторно
-    ranked = rank_news(candidates)
+    recent_titles = load_recent_titles()
+    ranked = rank_news(candidates, recent_titles)
     for it, score in ranked:
         if score <= SKIP_SCORE:
             posted.append(it.link)
@@ -74,6 +75,7 @@ def run() -> int:
                 link=item.link,
             )
             posted.append(item.link)
+            recent_titles.append(f"{item.title} ({item.source})")
             published_count += 1
             print("   Опубліковано.")
         except Exception as e:
@@ -84,6 +86,7 @@ def run() -> int:
         time.sleep(config.delay_between_posts)
 
     save_posted(posted)
+    save_recent_titles(recent_titles)
     print(f"Готово. Опубліковано новин: {published_count}/{config.posts_per_run}")
 
     if published_count == 0:

@@ -17,10 +17,14 @@ RANK_PROMPT = """Ти — головний редактор місцевого T
 оголошення про громадські обговорення документів, СЕО, звіти, привітання, протокольні зустрічі,
 загальнообласні новини, де Стрийщина згадана мимохідь.
 
+ДУЖЕ ВАЖЛИВО: якщо новина про ту саму подію, що вже є в списку «Вже опубліковано»
+(та сама аварія, той самий злочин, те саме рішення — навіть з іншого джерела й іншими словами),
+став їй оцінку 1. Якщо серед нових кілька новин про одну подію — високу оцінку лише одній, найповнішій.
+
 Поверни ВИКЛЮЧНО JSON-масив без іншого тексту: [{"id": 0, "score": 7}, ...] для кожної новини."""
 
 
-def rank_news(items: list) -> list[tuple]:
+def rank_news(items: list, published_titles: list | None = None) -> list[tuple]:
     """Повертає [(item, score)], відсортовані від найцікавішої. При помилці — усі з оцінкою 5."""
     if not items:
         return []
@@ -28,12 +32,14 @@ def rank_news(items: list) -> list[tuple]:
     for i, it in enumerate(items):
         summary = (it.summary or "")[:300]
         lines.append(f"[{i}] ({it.source}) {it.title}\n{summary}")
+    published = "\n".join(f"- {t}" for t in (published_titles or [])[-30:]) or "(поки нічого)"
+    user_content = f"Вже опубліковано в каналі:\n{published}\n\nНові новини для оцінки:\n\n" + "\n\n".join(lines)
     try:
         response = client.messages.create(
             model=config.anthropic_model,
             max_tokens=600,
             system=RANK_PROMPT,
-            messages=[{"role": "user", "content": "\n\n".join(lines)}],
+            messages=[{"role": "user", "content": user_content}],
         )
         raw = "".join(b.text for b in response.content if b.type == "text")
         match = re.search(r"\[.*\]", raw, re.DOTALL)
