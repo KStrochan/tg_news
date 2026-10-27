@@ -14,6 +14,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 class Config:
     telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     telegram_channel_id: str = os.getenv("TELEGRAM_CHANNEL_ID", "").strip()
+    channel_title: str = os.getenv("CHANNEL_TITLE", "Стрий | Новини Стрийщини").strip()
 
     anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "").strip()
     anthropic_model: str = os.getenv("ANTHROPIC_MODEL") or "claude-sonnet-5-5"

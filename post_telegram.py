@@ -16,6 +16,7 @@ def _build_text(title: str, post_text: str, source: str, link: str, limit: int) 
     title_h = html.escape(title or "")
     source_h = html.escape(source or "")
     footer = f'\n\n🔗 <a href="{html.escape(link, quote=True)}">{source_h}</a>' if link else f"\n\n🔗 {source_h}"
+    footer += _subscribe_line()
 
     body = html.escape(post_text or "")
     head = f"<b>{title_h}</b>\n\n"
@@ -23,6 +24,15 @@ def _build_text(title: str, post_text: str, source: str, link: str, limit: int) 
     if len(body) > room:
         body = body[: max(room - 1, 0)].rstrip() + "…"
     return head + body + footer
+
+
+def _subscribe_line() -> str:
+    """Рядок «Підписатись» з посиланням на канал (якщо канал заданий як @username)."""
+    channel = config.telegram_channel_id
+    if not channel.startswith("@"):
+        return ""
+    title = html.escape(config.channel_title or "наш канал")
+    return f'\n👉 <a href="https://t.me/{channel[1:]}">Підписатись на {title}</a>'
 
 
 def _call(method: str, data: dict, files: dict | None = None) -> dict:

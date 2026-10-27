@@ -1,13 +1,13 @@
-name: Post news to Telegram
+name: Post Stryi news to Telegram
 
 on:
   schedule:
-    # Публікації о 08:00, 12:00, 16:00 та 19:00 за Києвом (UTC+3 влітку / +2 взимку)
-    # Час вказано в UTC, тому враховуйте зсув. Нижче приклад для літнього часу (Kyiv = UTC+3).
-    - cron: "0 5 * * *"   # 08:00 Київ
-    - cron: "0 9 * * *"   # 12:00 Київ
-    - cron: "0 13 * * *"  # 16:00 Київ
-    - cron: "0 16 * * *"  # 19:00 Київ
+    # Час у cron — UTC. Зараз зимовий час (Київ = UTC+2): 08:00, 12:00, 16:00, 19:00 за Києвом.
+    # Влітку (Київ = UTC+3) пости вийдуть на годину пізніше — тоді відніміть ще 1 годину.
+    - cron: "0 6 * * *"   # 08:00 Київ
+    - cron: "0 10 * * *"  # 12:00 Київ
+    - cron: "0 14 * * *"  # 16:00 Київ
+    - cron: "0 17 * * *"  # 19:00 Київ
   workflow_dispatch: {}   # дозволяє запускати вручну кнопкою "Run workflow"
 
 permissions:
@@ -39,6 +39,7 @@ jobs:
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_MODEL: claude-sonnet-5-5
+          CHANNEL_TITLE: "Стрий | Новини Стрийщини"
           IMAGE_PROVIDER: pollinations
           POSTS_PER_RUN: 1
         run: python main.py
