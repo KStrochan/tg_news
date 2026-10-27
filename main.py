@@ -1,4 +1,5 @@
 """Головний скрипт: бере свіжі новини -> генерує текст та картинку -> постить у Telegram."""
+import os
 import sys
 import time
 
@@ -9,18 +10,33 @@ from generate_image import generate_image
 from post_telegram import post_to_channel
 from storage import load_posted, save_posted
 
+IN_GITHUB = os.getenv("GITHUB_ACTIONS") == "true"
 
-def run():
-    config.validate()
+
+def gh_error(message: str):
+    """Виводить помилку так, щоб GitHub показав її текстом прямо на сторінці запуску."""
+    print(message, file=sys.stderr)
+    if IN_GITHUB:
+        print(f"::error title=tg_news::{message}".replace("\n", " "))
+
+
+def run() -> int:
+    try:
+        config.validate()
+    except RuntimeError as e:
+        gh_error(str(e))
+        return 1
 
     posted = load_posted()
-    news_items = get_unpublished_news(posted, limit=config.posts_per_run)
+    news_items = get_unpublished_news(set(posted), limit=config.posts_per_run)
 
     if not news_items:
         print("Нових новин не знайдено (можливо, все вже опубліковано або джерела недоступні).")
-        return
+        save_posted(posted)
+        return 0
 
     published_count = 0
+    errors = []
     for item in news_items:
         try:
             print(f"-> Обробляю: {item.title} ({item.source})")
@@ -33,10 +49,11 @@ def run():
                 source=item.source,
                 link=item.link,
             )
-            posted.add(item.link)
+            posted.append(item.link)
             published_count += 1
             print("   Опубліковано.")
         except Exception as e:
+            errors.append(f"'{item.title[:60]}': {e}")
             print(f"   Помилка при обробці новини '{item.title}': {e}", file=sys.stderr)
             continue
 
@@ -45,6 +62,11 @@ def run():
     save_posted(posted)
     print(f"Готово. Опубліковано новин: {published_count}/{len(news_items)}")
 
+    if published_count == 0:
+        gh_error("Жодну новину не опубліковано. " + " | ".join(errors)[:900])
+        return 1
+    return 0
+
 
 if __name__ == "__main__":
-    run()
+    sys.exit(run())

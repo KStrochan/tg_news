@@ -12,11 +12,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 @dataclass
 class Config:
-    telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
-    telegram_channel_id: str = os.getenv("TELEGRAM_CHANNEL_ID", "")
+    telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+    telegram_channel_id: str = os.getenv("TELEGRAM_CHANNEL_ID", "").strip()
 
-    anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "")
-    anthropic_model: str = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-5")
+    anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    anthropic_model: str = os.getenv("ANTHROPIC_MODEL") or "claude-sonnet-5-5"
 
     image_provider: str = os.getenv("IMAGE_PROVIDER", "pollinations")
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
@@ -37,7 +37,8 @@ class Config:
             missing.append("ANTHROPIC_API_KEY")
         if missing:
             raise RuntimeError(
-                "Відсутні обов'язкові змінні середовища: " + ", ".join(missing)
+                "Не задані секрети: " + ", ".join(missing)
+                + ". Додайте їх у GitHub: Settings → Secrets and variables → Actions → New repository secret."
             )
 
 

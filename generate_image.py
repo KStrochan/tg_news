@@ -16,8 +16,10 @@ def _generate_pollinations(prompt: str) -> bytes:
         f"https://image.pollinations.ai/prompt/{encoded}"
         f"?width=1024&height=1024&seed={seed}&nologo=true"
     )
-    resp = requests.get(url, timeout=60)
+    resp = requests.get(url, timeout=90)
     resp.raise_for_status()
+    if not resp.headers.get("Content-Type", "").startswith("image/"):
+        raise RuntimeError(f"Pollinations повернув не картинку: {resp.headers.get('Content-Type')}")
     return resp.content
 
 
@@ -35,7 +37,12 @@ def _generate_openai(prompt: str) -> bytes:
     return base64.b64decode(b64)
 
 
-def generate_image(prompt: str) -> bytes:
-    if config.image_provider == "openai":
-        return _generate_openai(prompt)
-    return _generate_pollinations(prompt)
+def generate_image(prompt: str) -> bytes | None:
+    """Повертає байти картинки або None — тоді пост піде без фото, але піде."""
+    try:
+        if config.image_provider == "openai":
+            return _generate_openai(prompt)
+        return _generate_pollinations(prompt)
+    except Exception as e:
+        print(f"   [image] Не вдалося згенерувати картинку ({e}), пост буде без фото.")
+        return None
