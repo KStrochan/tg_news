@@ -1,36 +1,41 @@
 {
-  "_comment": "Джерела новин для каналу «Стрий | Новини Стрийщини». filter=false — беремо все (сайт міськради); filter=true — беремо тільки новини, де згадано Стрий або громади Стрийського району (див. local_keywords).",
+  "_comment": "Джерела новин для каналу «Стрий | Новини Стрийщини». filter=false — беремо все (сайт міськради); filter=true — беремо тільки новини, де згадано Стрий або громади Стрийського району (див. local_keywords). source_images=false — не брати фото з цього джерела (тоді бот генерує ілюстрацію).",
   "max_age_hours": 48,
   "feeds": [
     {
       "name": "Діловий Стрий",
       "url": "https://stryi.in.ua/new?format=feed&type=rss",
       "filter": true,
-      "enabled": true
+      "enabled": true,
+      "source_images": true
     },
     {
       "name": "Стрийська міська рада",
       "url": "https://stryi-rada.gov.ua/feed/",
       "filter": false,
-      "enabled": true
+      "enabled": true,
+      "source_images": true
     },
     {
       "name": "Твоє місто",
       "url": "https://tvoemisto.tv/rss.xml",
       "filter": true,
-      "enabled": true
+      "enabled": true,
+      "source_images": true
     },
     {
       "name": "ZAXID.NET",
       "url": "https://zaxid.net/rss/all.xml",
       "filter": true,
-      "enabled": true
+      "enabled": true,
+      "source_images": true
     },
     {
       "name": "Еспресо.Захід",
       "url": "https://zahid.espreso.tv/rss",
       "filter": true,
-      "enabled": true
+      "enabled": true,
+      "source_images": true
     }
   ],
   "_keywords_comment": "Слово має стояти на початку слова в тексті (без урахування регістру): «стрий» знайде Стрий, Стрийщина, Стрийський, але не «Австрия». Неоднозначні назви (Миколаїв, Тростянець) не додано, бо такі міста є і в інших областях.",

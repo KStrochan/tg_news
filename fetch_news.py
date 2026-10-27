@@ -2,7 +2,7 @@
 import html
 import json
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 
 import feedparser
@@ -25,6 +25,8 @@ class NewsItem:
     summary: str
     source: str
     published: datetime
+    entry: object = field(default=None, repr=False)  # сирий RSS-запис (для пошуку фото)
+    source_images: bool = True                        # чи можна брати фото з цього джерела
 
 
 def _clean_html(raw: str) -> str:
@@ -100,6 +102,8 @@ def fetch_all_news(max_per_feed: int = 30) -> list[NewsItem]:
                 summary=summary[:1500],
                 source=feed_cfg["name"],
                 published=_parse_date(entry),
+                entry=entry,
+                source_images=feed_cfg.get("source_images", True),
             )
             if item.published < cutoff:
                 continue

@@ -14,7 +14,7 @@ def _generate_pollinations(prompt: str) -> bytes:
     seed = random.randint(1, 1_000_000)
     url = (
         f"https://image.pollinations.ai/prompt/{encoded}"
-        f"?width=1024&height=1024&seed={seed}&nologo=true"
+        f"?width=1280&height=720&model=flux&enhance=true&seed={seed}&nologo=true"
     )
     resp = requests.get(url, timeout=90)
     resp.raise_for_status()

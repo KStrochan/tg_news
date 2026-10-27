@@ -7,6 +7,7 @@ from config import config
 from fetch_news import get_unpublished_news
 from generate_content import generate_post_content
 from generate_image import generate_image
+from source_image import get_source_image
 from post_telegram import post_to_channel
 from storage import load_posted, save_posted
 
@@ -44,7 +45,12 @@ def run() -> int:
         try:
             print(f"-> Обробляю: {item.title} ({item.source})")
             content = generate_post_content(item.title, item.summary, item.source)
-            image_bytes = generate_image(content["image_prompt"])
+            image_bytes = None
+            if item.source_images:
+                image_bytes = get_source_image(item.entry, item.link)
+                print("   [image] Фото з джерела" if image_bytes else "   [image] У джерелі фото немає — генерую")
+            if image_bytes is None:
+                image_bytes = generate_image(content["image_prompt"])
             post_to_channel(
                 image_bytes=image_bytes,
                 title=content["title"],
