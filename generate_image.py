@@ -1,4 +1,4 @@
-"""Генерація ілюстрації до новини. Підтримує безкоштовний Pollinations.ai та OpenAI Images API."""
+"""Картинка для новини без фото: фірмова картка (за замовчуванням), Pollinations.ai або OpenAI."""
 import base64
 import random
 import time
@@ -47,12 +47,29 @@ def _generate_openai(prompt: str) -> bytes:
     return base64.b64decode(b64)
 
 
-def generate_image(prompt: str) -> bytes | None:
-    """Повертає байти картинки або None — тоді пост піде без фото, але піде."""
+def _card(title: str, source: str) -> bytes:
+    from news_card import make_card
+
+    channel = config.telegram_channel_id
+    link = f"t.me/{channel[1:]}" if channel.startswith("@") else ""
+    return make_card(title, source, config.channel_title, link)
+
+
+def generate_image(prompt: str, title: str = "", source: str = "") -> bytes | None:
+    """Картинка, коли в джерелі немає фото.
+
+    IMAGE_PROVIDER=card (за замовчуванням) — фірмова картка з заголовком;
+    pollinations / openai — AI-ілюстрація, а якщо сервіс недоступний — теж картка.
+    """
+    if config.image_provider in ("pollinations", "openai"):
+        try:
+            if config.image_provider == "openai":
+                return _generate_openai(prompt)
+            return _generate_pollinations(prompt)
+        except Exception as e:
+            print(f"   [image] AI-картинка не вийшла ({e}), роблю картку.")
     try:
-        if config.image_provider == "openai":
-            return _generate_openai(prompt)
-        return _generate_pollinations(prompt)
+        return _card(title, source)
     except Exception as e:
-        print(f"   [image] Не вдалося згенерувати картинку ({e}), пост буде без фото.")
+        print(f"   [image] Не вдалося зробити картку ({e}), пост буде без фото.")
         return None

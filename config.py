@@ -19,7 +19,7 @@ class Config:
     anthropic_api_key: str = os.getenv("ANTHROPIC_API_KEY", "").strip()
     anthropic_model: str = os.getenv("ANTHROPIC_MODEL") or "claude-sonnet-5-5"
 
-    image_provider: str = os.getenv("IMAGE_PROVIDER", "pollinations")
+    image_provider: str = os.getenv("IMAGE_PROVIDER", "card")
     openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
 
     posts_per_run: int = int(os.getenv("POSTS_PER_RUN", "1"))

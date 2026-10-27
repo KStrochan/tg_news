@@ -48,9 +48,9 @@ def run() -> int:
             image_bytes = None
             if item.source_images:
                 image_bytes = get_source_image(item.entry, item.link)
-                print("   [image] Фото з джерела" if image_bytes else "   [image] У джерелі фото немає — генерую")
+                print("   [image] Фото з джерела" if image_bytes else "   [image] У джерелі фото немає — роблю картку")
             if image_bytes is None:
-                image_bytes = generate_image(content["image_prompt"])
+                image_bytes = generate_image(content["image_prompt"], content["title"], item.source)
             post_to_channel(
                 image_bytes=image_bytes,
                 title=content["title"],
