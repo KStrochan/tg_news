@@ -198,7 +198,22 @@
     "https://zaxid.net/holostyak_15_vipusk_3_hto_pokinuv_shou_pislya_pershogo_tizhnya_pershi_pobachennya_n1649105",
     "https://www.pravda.com.ua/news/2026/10/30/8060573/",
     "https://www.pravda.com.ua/news/2026/10/30/8060571/",
-    "https://stryi.in.ua/new/item/2554-zavtra-u-stryyu-bude-futbol"
+    "https://stryi.in.ua/new/item/2554-zavtra-u-stryyu-bude-futbol",
+    "https://tvoemisto.tv/uk/news/13039-otruta-v-posylkakh-ta-pidstavni-pobachennya-yak-rosiyany-cherez-ditey-i-telegram-polyuyut-na-voyiniv-zsu",
+    "https://www.pravda.com.ua/news/2026/10/31/8060618/",
+    "https://zaxid.net/zhitel_sheptitskogo_provede_v_tyurmi_5_rokiv_za_povtorne_szch_n1649110",
+    "https://www.pravda.com.ua/news/2026/10/31/8060623/",
+    "https://www.pravda.com.ua/news/2026/10/31/8060617/",
+    "https://zaxid.net/the_economist_otsiniv_zagalni_vtrati_rosiyi_u_viyni_proti_ukrayini_v_21_mln_viyskovih_n1649112",
+    "https://www.pravda.com.ua/news/2026/10/31/8060621/",
+    "https://www.pravda.com.ua/news/2026/10/31/8060604/",
+    "https://zaxid.net/litaki_z_evakuyovanimi_zhitelyami_oleshkiv_pribuli_do_bilorusi_n1649111",
+    "https://www.pravda.com.ua/news/2026/10/31/8060605/",
+    "https://zaxid.net/shokoladne_pechivo_na_mineralniy_vodi_yak_prigotuvati_pokrokoviy_retsept_n1649057",
+    "https://www.pravda.com.ua/news/2026/10/31/8060602/",
+    "https://www.pravda.com.ua/news/2026/10/31/8060598/",
+    "https://tvoemisto.tv/uk/news/13038-potribni-vzhe-tsiyeyi-zymy-ukrayina-zaklykaye-ssha-pryshvydshyty-postavky-500-raket-dlya-ppo",
+    "https://tvoemisto.tv/uk/news/13040-u-lvovi-ochikuyutsya-pershi-zamorozky-yak-zminytsya-pohoda-do-4-lystopada"
   ],
   "recent_titles": [
     "У Стрию відбулося засідання постійних депутатських комісій (Стрийська міська рада)",
@@ -218,7 +233,8 @@
     "Якою буде погода на Львівщині та у Львові (Твоє місто)",
     "На Стрийському кладовищі відбудеться загальна панахида за всіх Героїв, які загинули у боротьбі за Україну (Стрийська міська рада)",
     "Вчинив дві ДТП за декілька хвилин: на Стрийщині нетверезий водій на смерть збив жінку та втік (Твоє місто)",
-    "Завтра у Стрию буде футбол (Діловий Стрий)"
+    "Завтра у Стрию буде футбол (Діловий Стрий)",
+    "У Львові очікуються перші заморозки: як зміниться погода до 4 листопада (Твоє місто)"
   ],
   "scores": {
     "https://stryi.in.ua/new/item/2533-na-richkakh-stryyshchyny-deshcho-pidvyshchyvsya-riven-vody-pislya-opadiv": 5,
@@ -427,6 +443,21 @@
     "https://www.pravda.com.ua/news/2026/10/30/8060573/": 1,
     "https://tvoemisto.tv/uk/news/13021-cherez-skarhy-meshkanky-u-lvovi-mozhut-prypynyty-kontserty-v-nyzhnomu-zali-teatru-lyalok-shcho-vidomo": 2,
     "https://www.pravda.com.ua/news/2026/10/30/8060571/": 1,
-    "https://zaxid.net/derzhdep_ssha_shvaliv_prodazh_ukrayini_500_raket_dlya_patriot_n1649104": 3
+    "https://zaxid.net/derzhdep_ssha_shvaliv_prodazh_ukrayini_500_raket_dlya_patriot_n1649104": 3,
+    "https://www.pravda.com.ua/news/2026/10/31/8060623/": 1,
+    "https://www.pravda.com.ua/news/2026/10/31/8060617/": 1,
+    "https://zaxid.net/the_economist_otsiniv_zagalni_vtrati_rosiyi_u_viyni_proti_ukrayini_v_21_mln_viyskovih_n1649112": 1,
+    "https://tvoemisto.tv/uk/news/13039-otruta-v-posylkakh-ta-pidstavni-pobachennya-yak-rosiyany-cherez-ditey-i-telegram-polyuyut-na-voyiniv-zsu": 3,
+    "https://www.pravda.com.ua/news/2026/10/31/8060621/": 1,
+    "https://www.pravda.com.ua/news/2026/10/31/8060618/": 2,
+    "https://tvoemisto.tv/uk/news/13040-u-lvovi-ochikuyutsya-pershi-zamorozky-yak-zminytsya-pohoda-do-4-lystopada": 6,
+    "https://www.pravda.com.ua/news/2026/10/31/8060604/": 1,
+    "https://zaxid.net/litaki_z_evakuyovanimi_zhitelyami_oleshkiv_pribuli_do_bilorusi_n1649111": 1,
+    "https://www.pravda.com.ua/news/2026/10/31/8060605/": 1,
+    "https://zaxid.net/shokoladne_pechivo_na_mineralniy_vodi_yak_prigotuvati_pokrokoviy_retsept_n1649057": 1,
+    "https://www.pravda.com.ua/news/2026/10/31/8060602/": 1,
+    "https://www.pravda.com.ua/news/2026/10/31/8060598/": 1,
+    "https://tvoemisto.tv/uk/news/13038-potribni-vzhe-tsiyeyi-zymy-ukrayina-zaklykaye-ssha-pryshvydshyty-postavky-500-raket-dlya-ppo": 1,
+    "https://zaxid.net/zhitel_sheptitskogo_provede_v_tyurmi_5_rokiv_za_povtorne_szch_n1649110": 2
   }
 }
