@@ -275,7 +275,22 @@
     "https://www.pravda.com.ua/news/2026/11/01/8060757/",
     "https://www.pravda.com.ua/news/2026/11/01/8060756/",
     "https://www.pravda.com.ua/news/2026/11/01/8060754/",
-    "https://tvoemisto.tv/uk/news/13069-13-poshkodzhenykh-budynkiv-novi-detali-naslidkiv-rosiyskoyi-ataky-u-lvivskiy-hromadi-1-lystopada"
+    "https://tvoemisto.tv/uk/news/13069-13-poshkodzhenykh-budynkiv-novi-detali-naslidkiv-rosiyskoyi-ataky-u-lvivskiy-hromadi-1-lystopada",
+    "https://zaxid.net/yak_prokolyuvati_kvashenu_kapustu_yakih_pomilok_ne_mozhna_dopuskati_n1648931",
+    "https://www.pravda.com.ua/news/2026/11/02/8060782/",
+    "https://www.pravda.com.ua/news/2026/11/01/8060780/",
+    "https://www.pravda.com.ua/news/2026/11/01/8060771/",
+    "https://www.pravda.com.ua/news/2026/11/01/8060769/",
+    "https://www.pravda.com.ua/news/2026/11/01/8060777/",
+    "https://zaxid.net/rosiyani_zlamali_ofitsiyniy_zastosunok_povitryana_trivoga_n1649165",
+    "https://www.pravda.com.ua/news/2026/11/01/8060773/",
+    "https://tvoemisto.tv/uk/news/13074-ne-volnuytyes-lyetit-oryeshnik-rosiyany-imovirno-zlamaly-dodatok-tryvoha",
+    "https://www.pravda.com.ua/news/2026/11/01/8060772/",
+    "https://www.pravda.com.ua/news/2026/11/01/8060770/",
+    "https://zaxid.net/na_prezidentskih_viborah_u_bolgariyi_lidiruye_kandidatka_yaka_proti_viyskovoyi_dopomogi_ukrayini_n1649164",
+    "https://www.pravda.com.ua/news/2026/11/01/8060768/",
+    "https://zaxid.net/yaponskiy_arhitektor_koyichi_kimura_stvoriv_minimalistichniy_budinok_u_prefekturi_siga_n1649060",
+    "https://www.pravda.com.ua/news/2026/11/02/8060781/"
   ],
   "recent_titles": [
     "У Стрию відбулося засідання постійних депутатських комісій (Стрийська міська рада)",
@@ -300,7 +315,8 @@
     "На Львівщині п’яний водій «Жигулів» збив на смерть 80-річну жінку та втік з місця ДТП (Діловий Стрий)",
     "У поминальний день, 1 листопада, на Стрийському кладовищі відбудеться загальна панахида за всіх Героїв, які загинули у боротьбі за Україну. (Діловий Стрий)",
     "Водіїв попереджають про ожеледицю на дорогах: прогноз погоди на Львівщині на 2 листопада (ZAXID.NET)",
-    "13 пошкоджених будинків: нові деталі наслідків російської атаки у Львівській громаді 1 листопада (Твоє місто)"
+    "13 пошкоджених будинків: нові деталі наслідків російської атаки у Львівській громаді 1 листопада (Твоє місто)",
+    "Злам додатка \"Повітряна тривога\": Мінцифри і ДСНС пояснили, як дізнаватися актуальну інформацію (Українська правда)"
   ],
   "scores": {
     "https://stryi.in.ua/new/item/2533-na-richkakh-stryyshchyny-deshcho-pidvyshchyvsya-riven-vody-pislya-opadiv": 5,
@@ -584,6 +600,21 @@
     "https://www.pravda.com.ua/news/2026/11/01/8060757/": 1,
     "https://www.pravda.com.ua/news/2026/11/01/8060756/": 1,
     "https://www.pravda.com.ua/news/2026/11/01/8060746/": 2,
-    "https://www.pravda.com.ua/news/2026/11/01/8060754/": 1
+    "https://www.pravda.com.ua/news/2026/11/01/8060754/": 1,
+    "https://zaxid.net/yak_prokolyuvati_kvashenu_kapustu_yakih_pomilok_ne_mozhna_dopuskati_n1648931": 2,
+    "https://www.pravda.com.ua/news/2026/11/02/8060782/": 2,
+    "https://www.pravda.com.ua/news/2026/11/02/8060781/": 6,
+    "https://www.pravda.com.ua/news/2026/11/01/8060780/": 2,
+    "https://www.pravda.com.ua/news/2026/11/01/8060777/": 1,
+    "https://zaxid.net/rosiyani_zlamali_ofitsiyniy_zastosunok_povitryana_trivoga_n1649165": 1,
+    "https://www.pravda.com.ua/news/2026/11/01/8060773/": 1,
+    "https://tvoemisto.tv/uk/news/13074-ne-volnuytyes-lyetit-oryeshnik-rosiyany-imovirno-zlamaly-dodatok-tryvoha": 1,
+    "https://www.pravda.com.ua/news/2026/11/01/8060772/": 1,
+    "https://www.pravda.com.ua/news/2026/11/01/8060771/": 2,
+    "https://www.pravda.com.ua/news/2026/11/01/8060770/": 1,
+    "https://www.pravda.com.ua/news/2026/11/01/8060769/": 2,
+    "https://zaxid.net/na_prezidentskih_viborah_u_bolgariyi_lidiruye_kandidatka_yaka_proti_viyskovoyi_dopomogi_ukrayini_n1649164": 1,
+    "https://www.pravda.com.ua/news/2026/11/01/8060768/": 1,
+    "https://zaxid.net/yaponskiy_arhitektor_koyichi_kimura_stvoriv_minimalistichniy_budinok_u_prefekturi_siga_n1649060": 1
   }
 }
